@@ -48,27 +48,40 @@ public class Obstacle : MonoBehaviour
 
     private void OnMouseDown()
     {
-        switch (UIManager.Instance.mousePointer.MouseType)
+        if (UIManager.Instance.mousePointer.MouseType == MouseType.Repair)
         {
-            case MouseType.Destroy:
-
-                UIManager.Instance.dialogPanel.Reset();
-                if (!isRepaired)
-                {
-                    StartCoroutine(ObsDestroy());
-                }
-                else
-                {
-                    _particle.Play();
-                    Destroy(this, 1f);
-                }
-                break;
-            case MouseType.Repair:
-                StartCoroutine(ObsRepair());
-                break;
+            StartCoroutine(ObsRepair());
         }
-
     }
+
+
+    public void DestroyObs()
+    {
+        StartCoroutine(ObsDestroy());
+    }
+
+
+    public void ObsFade()
+    {
+        StartCoroutine(Fade());
+    }
+
+    IEnumerator Fade()
+    {
+        _sprite.enabled = true;
+        Color color = _sprite.color;
+        color.a = 1;
+        _sprite.color = color;
+        yield return new WaitForSeconds(0.3f);
+        while (color.a >= 0.3f)
+        {
+            color.a -= 0.04f;
+            _sprite.color = color;
+            yield return 0;
+        }
+        _collider.enabled = false;
+    }
+
 
     IEnumerator ObsDestroy()
     {
@@ -101,11 +114,11 @@ public class Obstacle : MonoBehaviour
     }
 
 
-   
 
 
 
-   
+
+
 
 
 

@@ -18,6 +18,8 @@ public class MousePointer : MonoBehaviour
     public string destroyText;
     public string repairText;
 
+    RectTransform rectTransform;
+
     Image image;
     Text text;
 
@@ -28,8 +30,13 @@ public class MousePointer : MonoBehaviour
         get { return mouseType; }
         set
         {
-            switch (value)
+            mouseType = value;
+            switch (mouseType)
             {
+                case MouseType.Null:
+                    this.image.enabled = false;
+                    this.text.text = " ";
+                    break;
                 case MouseType.Destroy:
                     this.image.enabled = true;
                     this.image.sprite = destroySprite;
@@ -40,17 +47,10 @@ public class MousePointer : MonoBehaviour
                     this.image.sprite = repairSprite;
                     this.text.text = repairText;
                     break;
-                default:
-                    this.image.enabled = false;
-                    this.text.text = " ";
-                    break;
             }
-            mouseType = value;
+            
         }
     }
-
-    RectTransform rectTransform;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -59,14 +59,17 @@ public class MousePointer : MonoBehaviour
         text = GetComponentInChildren<Text>();
     }
 
+
+
+
     // Update is called once per frame
     void Update()
     {
         Vector3 pos;
         RectTransformUtility.ScreenPointToWorldPointInRectangle(rectTransform, Input.mousePosition, null, out pos);
 
-        Vector3 dis = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        dis.z = this.transform.position.z;
+        //Vector3 dis = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //dis.z = this.transform.position.z;
         //transform.position = dis;
         transform.position = pos;
 

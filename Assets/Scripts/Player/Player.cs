@@ -8,10 +8,14 @@ public class Player : MonoBehaviour
     public string playerName { get; set; }
     public float age;
     Rigidbody2D rg;
-    public Animator animator;
+    Animator animator;
     public float moveSpeed = 3f;
     public bool canMove;
     int anim_idle;
+
+    public Obstacle obstacle;
+
+
     private void Awake()
     {
         rg = GetComponent<Rigidbody2D>();
@@ -51,8 +55,10 @@ public class Player : MonoBehaviour
             animator.SetBool(anim_idle, true);
             if (colliderHit.collider.GetComponent<Obstacle>() != null)
             {
-                Obstacle obstacle = colliderHit.collider.GetComponent<Obstacle>();
-                UIManager.Instance.dialogPanel.ScriptablePlots = obstacle.scriptablePlots;
+                
+                Obstacle ob = colliderHit.collider.GetComponent<Obstacle>();
+                obstacle = ob;
+                UIManager.Instance.dialogPanel.ScriptablePlots = ob.scriptablePlots;
             }
         }
         else

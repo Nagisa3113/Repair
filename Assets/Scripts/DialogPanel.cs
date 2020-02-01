@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class DialogPanel : MonoBehaviour
 {
-    public Image image;
-    public Text text;
+    Image image;
+    Text text;
 
     ScriptablePlots scriptablePlots;
 
@@ -24,7 +24,6 @@ public class DialogPanel : MonoBehaviour
             }
         }
     }
-
     public Plot plot;
 
     int i;
@@ -91,7 +90,7 @@ public class DialogPanel : MonoBehaviour
     IEnumerator AutoText()
     {
         text.text = "";
-        while (plot.nextPlotNum != -1)
+        while (true)
         {
             for (int i = 0; i < plot.texts.Count; i++)
             {
@@ -104,10 +103,22 @@ public class DialogPanel : MonoBehaviour
                 text.text = "";
             }
             plot = scriptablePlots.plots[plot.nextPlotNum];
+
+
+            if (plot.nextPlotNum == -1)
+            {
+                //GameOver;
+                break;
+            }
+
+            if (plot.nextPlotNum == -2)
+            {
+                GameManager.Instance.player.obstacle.ObsFade();
+                break;
+            }
+
         }
-
     }
-
 
     IEnumerator SetTextUI()
     {
@@ -139,13 +150,20 @@ public class DialogPanel : MonoBehaviour
 
     public void OnImageClick()
     {
-        Debug.Log("click");
+        if (plot.canInterrupt)
+        {
+            GameManager.Instance.player.obstacle.DestroyObs();
+
+            StopAllCoroutines();
+            plot = scriptablePlots.plots[plot.interruptPlotNum];
+            StartCoroutine(AutoText());
+
+        }
     }
 
     public void OnImageExit()
     {
         UIManager.Instance.mousePointer.MouseType = MouseType.Null;
-
     }
 
 
