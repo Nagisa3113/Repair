@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class Player : MonoBehaviour
 {
+    public LayerMask objectLayer;
+
     public string name { get; set; }
 
-    public  int hp;
+    public int hp;
 
     public int gold;
 
@@ -18,21 +21,30 @@ public class Player : MonoBehaviour
 
     Rigidbody2D rg;
 
+    Animator animator;
+
+
     public float moveSpeed = 3f;
 
     public bool canMove = true;
 
 
+
+
+    int anim_idle;
+
+
     private void Awake()
     {
         rg = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        anim_idle = Animator.StringToHash("idle");
     }
 
     // Update is called once per frame
@@ -43,5 +55,28 @@ public class Player : MonoBehaviour
             rg.velocity = new Vector2(1f * moveSpeed, rg.velocity.y);
         }
 
+        Debug.DrawLine(this.transform.position, this.transform.position + Vector3.right * .5f);
     }
+
+    RaycastHit2D colliderHit;
+
+    private void FixedUpdate()
+    {
+        colliderHit = Physics2D.Raycast(this.transform.position, Vector2.right, .5f, objectLayer);
+
+        if (colliderHit.collider!=null)
+        {
+            canMove = false;
+            animator.SetBool(anim_idle, true);
+            Debug.Log(colliderHit.collider.name);
+        }
+        else
+        {
+            canMove = true;
+            animator.SetBool(anim_idle, false);
+        }
+    }
+
+
+
 }
