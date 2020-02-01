@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerInfo : MonoBehaviour
 {
-
     float time;
     public Text timeText;
     float delta = 2;
@@ -19,6 +18,7 @@ public class PlayerInfo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.isPause) return;
         time += Time.deltaTime;
         timeText.text = (time / delta).ToString("f2");
 

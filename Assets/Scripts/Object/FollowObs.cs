@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NormalObs : Obstacle
+public class FollowObs : Obstacle
 {
-    
+
+    public GameObject followObject;
+
+
     public override void OnDefeated(Player player)
     {
         player.gold += 10;
@@ -21,6 +24,7 @@ public class NormalObs : Obstacle
     {
         _collider = GetComponent<Collider2D>();
         _particle = GetComponent<ParticleSystem>();
+        followObject.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -48,13 +52,13 @@ public class NormalObs : Obstacle
     }
 
 
-
-
     IEnumerator ObsDestroy()
     {
         _particle.Play();
         yield return new WaitForSeconds(0.2f);
-        _collider.enabled=false;
+        _collider.enabled = false;
+        yield return new WaitForSeconds(0.6f);
+        followObject.SetActive(true);
 
     }
 

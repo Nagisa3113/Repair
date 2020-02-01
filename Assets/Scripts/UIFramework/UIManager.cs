@@ -7,8 +7,9 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-
-
+    public SliderController sliderController;
+    public MousePointer mousePointer;
+    public PlayerInfo playerInfo;
     [SerializeField]
     Transform canvasTransform;
     public Transform UICanvas

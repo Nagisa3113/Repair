@@ -5,6 +5,12 @@ using UnityEngine;
 
 public abstract class Obstacle : MonoBehaviour
 {
+
+   protected Collider2D _collider;
+
+    protected ParticleSystem _particle;
+
+
     protected int damage;
     protected int hp;
 

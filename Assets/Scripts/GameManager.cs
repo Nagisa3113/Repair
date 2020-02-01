@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public bool isPause=false;
 
     public static GameManager Instance;
 
