@@ -5,6 +5,7 @@ using System;
 public enum UIPanelType
 {
     StartPanel,
+    PausePanel,
 }
 
 [Serializable]

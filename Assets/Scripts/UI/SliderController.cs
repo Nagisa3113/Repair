@@ -30,7 +30,7 @@ public class SliderController : MonoBehaviour
 
         slider.onValueChanged.AddListener((value) =>
         {
-            if (GameManager.Instance.isPause)
+            if (GameManager.Instance.IsPause)
             {
                 if (value > currentValue)
                 {
@@ -52,4 +52,12 @@ public class SliderController : MonoBehaviour
         slider.value = (GameManager.Instance.player.transform.position.x - min) / max;
 
     }
+
+    private void OnMouseDown()
+    {
+        Debug.LogError("sdf");
+    }
+
+
+
 }

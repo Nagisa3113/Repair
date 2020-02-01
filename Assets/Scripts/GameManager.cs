@@ -4,7 +4,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public bool isPause=false;
+    public List<Obstacle> obstacleList = new List<Obstacle>();
+
+    bool isPause;
+    public bool IsPause
+    {
+        get { return isPause; }
+        set
+        {
+            if (value) PauseGame();
+            else ReGame();
+            isPause = value;
+        }
+    }
 
     public static GameManager Instance;
 
@@ -24,16 +36,31 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    
-        
-
         //UIManager.Instance.PushPanel(UIPanelType.StartPanel);
-
     }
 
-    // Update is called once per frame
-    void Update()
+    void PauseGame()
     {
-
+        foreach(var obs in obstacleList)
+        {
+            if (obs.isDestroyed)
+            {
+                obs.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                obs.isDestroyed = false;
+            }
+        }
     }
+
+    void ReGame()
+    {
+        foreach (var obs in obstacleList)
+        {
+            if (obs.isDestroyed)
+            {
+                obs.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            }
+        }
+    }
+
+
 }

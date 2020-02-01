@@ -1,33 +1,51 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DialogPanel : MonoBehaviour
 {
-    [SerializeField]
-    float textSpeed = 0.1f;
-
+    public Image image;
     public Text text;
 
-    public TextAsset textAsset;
+    ScriptablePlots scriptablePlots;
 
-    public int index;
+    public ScriptablePlots ScriptablePlots
+    {
+        set
+        {
+            if (scriptablePlots == value) return;
+            else
+            {
+                scriptablePlots = value;
+                plot = scriptablePlots.plots[0];
+                StartCoroutine(AutoText());
+            }
+        }
+    }
+
+    public Plot plot;
+
+    int i;
+    int index;
+    [SerializeField]
+    float textSpeed = 0.1f;
 
     [SerializeField]
     List<string> textList = new List<string>();
 
     bool textFinished = true;
 
-    int i;
-
     // Start is called before the first frame update
     void Start()
     {
         text = GetComponentInChildren<Text>();
+        image = GetComponentInChildren<Image>();
+
         text.text = "";
-        GetTextFromFile(textAsset);
         index = 0;
+
     }
 
     private void OnEnable()
@@ -37,44 +55,57 @@ public class DialogPanel : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
+        if (GameManager.Instance.IsPause) return;
 
-            if (index == textList.Count)
-            {
-                index = 0;
-            }
-            //text.text = textList[index];
-            //index++;
-            if (textFinished == true)
-            {
-                StartCoroutine(SetTextUI());
-            }
-            else
-            {
-                StopAllCoroutines();
-                for (int j = i; j < textList[index].Length; j++)
-                {
-                    text.text += textList[index][j];
-                }
-                i = 0;
-                index++;
-                textFinished = true;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    if (textList.Count < 1) return;
+
+        //    if (index == textList.Count)
+        //    {
+        //        //Destroy(currentobs.gameObject);
+        //        //currentobs = null;
+        //        textList.Clear();
+        //        index = 0;
+        //    }
+        //    //text.text = textList[index];
+        //    //index++;
+        //    if (textFinished == true)
+        //    {
+        //        StartCoroutine(SetTextUI());
+        //    }
+        //    else
+        //    {
+        //        StopAllCoroutines();
+        //        for (int j = i + 1; j < textList[index].Length; j++)
+        //        {
+        //            text.text += textList[index][j];
+        //        }
+        //        i = 0;
+        //        index++;
+        //        textFinished = true;
+        //    }
+        //}
     }
 
-
-    void GetTextFromFile(TextAsset textAsset)
+    IEnumerator AutoText()
     {
-        textList.Clear();
-        index = 0;
-        var lineData = textAsset.text.Split('\n');
-
-        foreach (var t in lineData)
+        text.text = "";
+        while (plot.nextPlotNum != -1)
         {
-            textList.Add(t);
+            for (int i = 0; i < plot.texts.Count; i++)
+            {
+                for (int j = 0; j < plot.texts[i].Length; j++)
+                {
+                    text.text += plot.texts[i][j];
+                    yield return new WaitForSeconds(textSpeed);
+                }
+                yield return new WaitForSeconds(0.6f);
+                text.text = "";
+            }
+            plot = scriptablePlots.plots[plot.nextPlotNum];
         }
+
     }
 
 
@@ -89,6 +120,32 @@ public class DialogPanel : MonoBehaviour
         }
         index++;
         textFinished = true;
+    }
+
+
+    public void Reset()
+    {
+        StopAllCoroutines();
+        textList.Clear();
+        index = 0;
+        text.text = "";
+    }
+
+
+    public void OnImageEnter()
+    {
+        UIManager.Instance.mousePointer.MouseType = MouseType.Destroy;
+    }
+
+    public void OnImageClick()
+    {
+        Debug.Log("click");
+    }
+
+    public void OnImageExit()
+    {
+        UIManager.Instance.mousePointer.MouseType = MouseType.Null;
+
     }
 
 

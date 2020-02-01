@@ -21,25 +21,31 @@ public class MousePointer : MonoBehaviour
     Image image;
     Text text;
 
-    MouseType mouseType=MouseType.Destroy;
+    [SerializeField]
+    MouseType mouseType = MouseType.Null;
     public MouseType MouseType
     {
-        get { return MouseType; }
+        get { return mouseType; }
         set
         {
             switch (value)
             {
                 case MouseType.Destroy:
+                    this.image.enabled = true;
                     this.image.sprite = destroySprite;
                     this.text.text = destroyText;
                     break;
                 case MouseType.Repair:
+                    this.image.enabled = true;
                     this.image.sprite = repairSprite;
                     this.text.text = repairText;
                     break;
                 default:
+                    this.image.enabled = false;
+                    this.text.text = " ";
                     break;
             }
+            mouseType = value;
         }
     }
 

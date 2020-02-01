@@ -5,22 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public LayerMask objectLayer;
-
-    public string name { get; set; }
-    public int hp;
-    public int gold;
-    public int anger;
-    public int status;
-
+    public string playerName { get; set; }
+    public float age;
     Rigidbody2D rg;
     public Animator animator;
-
     public float moveSpeed = 3f;
     public bool canMove;
-
-
     int anim_idle;
-
     private void Awake()
     {
         rg = GetComponent<Rigidbody2D>();
@@ -31,34 +22,38 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        age = 0;
         anim_idle = Animator.StringToHash("idle");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.isPause) return;
+        if (GameManager.Instance.IsPause) return;
 
         if (canMove)
         {
+            age += Time.deltaTime;
             rg.velocity = new Vector2(1f * moveSpeed, rg.velocity.y);
-           // rg.MovePosition(transform.position + Vector3.right * .1f);
+            // rg.MovePosition(transform.position + Vector3.right * .1f);
         }
-
         //Debug.DrawLine(this.transform.position, this.transform.position + Vector3.right * .5f);
     }
-
     RaycastHit2D colliderHit;
 
     private void FixedUpdate()
     {
         colliderHit = Physics2D.Raycast(this.transform.position, Vector2.right, .5f, objectLayer);
 
-        if (colliderHit.collider != null)
+        if (colliderHit)
         {
             canMove = false;
             animator.SetBool(anim_idle, true);
-            //Debug.Log(colliderHit.collider.name);
+            if (colliderHit.collider.GetComponent<Obstacle>() != null)
+            {
+                Obstacle obstacle = colliderHit.collider.GetComponent<Obstacle>();
+                UIManager.Instance.dialogPanel.ScriptablePlots = obstacle.scriptablePlots;
+            }
         }
         else
         {

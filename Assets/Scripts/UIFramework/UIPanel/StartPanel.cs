@@ -40,7 +40,7 @@ public class StartPanel : BasePanel
     {
         button.onClick.AddListener(() =>
         {
-            GameManager.Instance.player.name = inputField.textComponent.text;
+            GameManager.Instance.player.playerName = inputField.textComponent.text;
             UIManager.Instance.PopPanel();
         });
     }

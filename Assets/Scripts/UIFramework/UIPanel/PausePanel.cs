@@ -9,6 +9,19 @@ public class PausePanel : MonoBehaviour
     Button button;
     public Slider slider;
 
+    [SerializeField]
+    bool isOn ;
+    bool IsOn
+    {
+        get { return isOn; }
+        set
+        {
+            if (value == true) OnEnter();
+            else OnExit();
+            isOn = value;
+        }
+    }
+
     private void Awake()
     {
         image = GetComponent<Image>();
@@ -18,19 +31,25 @@ public class PausePanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        button.onClick.AddListener(() =>
-        {
-            image.enabled = !image.enabled;
-            GameManager.Instance.isPause = !GameManager.Instance.isPause;
-            slider.interactable = !slider.interactable;
-            UIManager.Instance.sliderController.currentValue = UIManager.Instance.sliderController.slider.value;
-            UIManager.Instance.mousePointer.MouseType = MouseType.Repair;
-        });
+        button.onClick.AddListener(() => { IsOn = !isOn; });
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnEnter()
     {
+        image.enabled = true;
+        GameManager.Instance.IsPause = true;
+        slider.interactable = true;
+        UIManager.Instance.sliderController.currentValue = UIManager.Instance.sliderController.slider.value;
+        UIManager.Instance.mousePointer.MouseType = MouseType.Repair;
+    }
+
+
+    public void OnExit()
+    {
+        image.enabled = false;
+        GameManager.Instance.IsPause = false;
+        slider.interactable = false;
+        UIManager.Instance.mousePointer.MouseType = MouseType.Destroy;
 
     }
 }

@@ -10,6 +10,10 @@ public class UIManager : MonoBehaviour
     public SliderController sliderController;
     public MousePointer mousePointer;
     public PlayerInfo playerInfo;
+    public DialogPanel dialogPanel;
+
+
+
     [SerializeField]
     Transform canvasTransform;
     public Transform UICanvas
