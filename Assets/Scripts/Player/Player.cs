@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rg;
     Animator animator;
     public float moveSpeed = 3f;
-    public bool canMove;
+    public bool canMove = true;
     int anim_idle;
 
     public Obstacle obstacle;
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     {
         if (GameManager.Instance.IsPause) return;
 
-        if (canMove)
+        if (canMove && UIManager.Instance.dialogPanel.textFinished)
         {
             age += Time.deltaTime;
             rg.velocity = new Vector2(1f * moveSpeed, rg.velocity.y);
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
             animator.SetBool(anim_idle, true);
             if (colliderHit.collider.GetComponent<Obstacle>() != null)
             {
-                
+
                 Obstacle ob = colliderHit.collider.GetComponent<Obstacle>();
                 obstacle = ob;
                 UIManager.Instance.dialogPanel.ScriptablePlots = ob.scriptablePlots;

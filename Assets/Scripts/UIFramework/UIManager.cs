@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public MousePointer mousePointer;
     public PlayerInfo playerInfo;
     public DialogPanel dialogPanel;
+    public PausePanel pausePanel;
 
 
 

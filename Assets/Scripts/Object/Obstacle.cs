@@ -17,9 +17,6 @@ public class Obstacle : MonoBehaviour
     Collider2D _collider;
     ParticleSystem _particle;
 
-    int repair;
-    int destroy;
-
     private void Awake()
     {
         _sprite = GetComponent<SpriteRenderer>();
@@ -30,8 +27,6 @@ public class Obstacle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        destroy = 1;
-        repair = 1;
         GameManager.Instance.obstacleList.Add(this);
     }
 

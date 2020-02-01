@@ -8,9 +8,7 @@ public class DialogPanel : MonoBehaviour
 {
     Image image;
     Text text;
-
     ScriptablePlots scriptablePlots;
-
     public ScriptablePlots ScriptablePlots
     {
         set
@@ -34,7 +32,7 @@ public class DialogPanel : MonoBehaviour
     [SerializeField]
     List<string> textList = new List<string>();
 
-    bool textFinished = true;
+    public bool textFinished = true;
 
     // Start is called before the first frame update
     void Start()
@@ -89,6 +87,8 @@ public class DialogPanel : MonoBehaviour
 
     IEnumerator AutoText()
     {
+        textFinished = false;
+
         text.text = "";
         while (true)
         {
@@ -102,36 +102,28 @@ public class DialogPanel : MonoBehaviour
                 yield return new WaitForSeconds(0.6f);
                 text.text = "";
             }
-            plot = scriptablePlots.plots[plot.nextPlotNum];
-
 
             if (plot.nextPlotNum == -1)
             {
                 //GameOver;
+                UIManager.Instance.pausePanel.OnEnter();
                 break;
             }
-
-            if (plot.nextPlotNum == -2)
+            else if (plot.nextPlotNum == -2)
             {
                 GameManager.Instance.player.obstacle.ObsFade();
                 break;
             }
+            else
+            {
+                plot = scriptablePlots.plots[plot.nextPlotNum];
+            }
 
         }
-    }
 
-    IEnumerator SetTextUI()
-    {
-        textFinished = false;
-        text.text = "";
-        for (i = 0; i < textList[index].Length; i++)
-        {
-            text.text += textList[index][i];
-            yield return new WaitForSeconds(textSpeed);
-        }
-        index++;
         textFinished = true;
     }
+
 
 
     public void Reset()

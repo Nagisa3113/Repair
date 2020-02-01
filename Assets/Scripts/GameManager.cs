@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
                 obs.isDestroyed = false;
             }
         }
+        Time.timeScale = 0;
+
     }
 
     void ReGame()
@@ -60,6 +62,7 @@ public class GameManager : MonoBehaviour
                 obs.gameObject.GetComponent<BoxCollider2D>().enabled = false;
             }
         }
+        Time.timeScale = 1;
     }
 
 

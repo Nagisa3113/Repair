@@ -9,6 +9,9 @@ public class PausePanel : MonoBehaviour
     Button button;
     public Slider slider;
 
+    public Text text;
+
+
     [SerializeField]
     bool isOn ;
     bool IsOn
@@ -25,13 +28,13 @@ public class PausePanel : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
-        button = GetComponentInChildren<Button>();
+        //button = GetComponentInChildren<Button>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        button.onClick.AddListener(() => { IsOn = !isOn; });
+        //button.onClick.AddListener(() => { IsOn = !IsOn; });
     }
 
     public void OnEnter()
