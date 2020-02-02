@@ -41,28 +41,16 @@ public class GameManager : MonoBehaviour
 
     void PauseGame()
     {
-        foreach(var obs in obstacleList)
-        {
-            if (obs.isDestroyed)
-            {
-                obs.gameObject.GetComponent<BoxCollider2D>().enabled = true;
-                obs.isDestroyed = false;
-            }
-        }
-        Time.timeScale = 0;
-
+        player.obstacle = null;
+        player.animator.SetBool("idle", true);
+        UIManager.Instance.dialogPanel.image.raycastTarget = false;
     }
 
     void ReGame()
     {
-        foreach (var obs in obstacleList)
-        {
-            if (obs.isDestroyed)
-            {
-                obs.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            }
-        }
-        Time.timeScale = 1;
+        player.animator.SetBool("idle", false);
+        UIManager.Instance.dialogPanel.image.raycastTarget = true; ;
+
     }
 
 

@@ -6,31 +6,17 @@ using UnityEngine.UI;
 
 public class DialogPanel : MonoBehaviour
 {
-    Image image;
+    public ScriptablePlots plot_good;
+    public ScriptablePlots plot_bad;
+
+    public Image image;
     Text text;
-    ScriptablePlots scriptablePlots;
-    public ScriptablePlots ScriptablePlots
-    {
-        set
-        {
-            if (scriptablePlots == value) return;
-            else
-            {
-                scriptablePlots = value;
-                plot = scriptablePlots.plots[0];
-                StartCoroutine(AutoText());
-            }
-        }
-    }
+
     public Plot plot;
 
-    int i;
-    int index;
+    public int index;
     [SerializeField]
     float textSpeed = 0.1f;
-
-    [SerializeField]
-    List<string> textList = new List<string>();
 
     public bool textFinished = true;
 
@@ -39,100 +25,66 @@ public class DialogPanel : MonoBehaviour
     {
         text = GetComponentInChildren<Text>();
         image = GetComponentInChildren<Image>();
-
         text.text = "";
         index = 0;
-
+        plot = plot_good.plots[index];
     }
 
-    private void OnEnable()
-    {
-
-    }
-
-    private void Update()
-    {
-        if (GameManager.Instance.IsPause) return;
-
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    if (textList.Count < 1) return;
-
-        //    if (index == textList.Count)
-        //    {
-        //        //Destroy(currentobs.gameObject);
-        //        //currentobs = null;
-        //        textList.Clear();
-        //        index = 0;
-        //    }
-        //    //text.text = textList[index];
-        //    //index++;
-        //    if (textFinished == true)
-        //    {
-        //        StartCoroutine(SetTextUI());
-        //    }
-        //    else
-        //    {
-        //        StopAllCoroutines();
-        //        for (int j = i + 1; j < textList[index].Length; j++)
-        //        {
-        //            text.text += textList[index][j];
-        //        }
-        //        i = 0;
-        //        index++;
-        //        textFinished = true;
-        //    }
-        //}
-    }
 
     IEnumerator AutoText()
     {
         textFinished = false;
 
         text.text = "";
-        while (true)
+
+        AudioManager.Instance.PlayClip(AudioManager.Instance.type);
+
+        for (int i = 0; i < plot.texts.Count; i++)
         {
-            for (int i = 0; i < plot.texts.Count; i++)
+            for (int j = 0; j < plot.texts[i].Length; j++)
             {
-                for (int j = 0; j < plot.texts[i].Length; j++)
-                {
-                    text.text += plot.texts[i][j];
-                    yield return new WaitForSeconds(textSpeed);
-                }
-                yield return new WaitForSeconds(0.6f);
-                text.text = "";
+                text.text += plot.texts[i][j];
+                yield return new WaitForSeconds(textSpeed);
             }
-
-            if (plot.nextPlotNum == -1)
-            {
-                //GameOver;
-                UIManager.Instance.pausePanel.OnEnter();
-                break;
-            }
-            else if (plot.nextPlotNum == -2)
-            {
-                GameManager.Instance.player.obstacle.ObsFade();
-                break;
-            }
-            else
-            {
-                plot = scriptablePlots.plots[plot.nextPlotNum];
-            }
-
+            yield return new WaitForSeconds(0.6f);
+            text.text = "";
         }
 
+        AudioManager.Instance.audio.Stop();
+
         textFinished = true;
+
+        if (plot.nextPlotNum == -1)
+        {
+            //GameOver;
+            UIManager.Instance.pausePanel.OnEnter();
+        }
+        else if (plot.nextPlotNum == -2)
+        {
+        }
+        else
+        {
+            GameManager.Instance.player.obstacle.ObsFade();
+        }
     }
 
 
-
-    public void Reset()
+    public void NextMsg()
     {
-        StopAllCoroutines();
-        textList.Clear();
-        index = 0;
-        text.text = "";
+        index = plot.nextPlotNum;
+        plot = plot_good.plots[index];
+        StartCoroutine(AutoText());
     }
+
+    public void NextMsg(int index)
+    {
+        plot = plot_good.plots[index];
+        index = plot.nextPlotNum;
+        StartCoroutine(AutoText());
+    }
+
+
+
 
 
     public void OnImageEnter()
@@ -147,7 +99,7 @@ public class DialogPanel : MonoBehaviour
             GameManager.Instance.player.obstacle.DestroyObs();
 
             StopAllCoroutines();
-            plot = scriptablePlots.plots[plot.interruptPlotNum];
+            plot = plot_bad.plots[plot.interruptPlotNum];
             StartCoroutine(AutoText());
 
         }

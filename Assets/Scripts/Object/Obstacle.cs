@@ -6,16 +6,14 @@ using UnityEngine.UI;
 
 public class Obstacle : MonoBehaviour
 {
-    public ScriptablePlots scriptablePlots;
-
-    Plot plot;
-
+    public int plotIndex;
     public bool isDestroyed;
-    public bool isRepaired;
 
     SpriteRenderer _sprite;
     Collider2D _collider;
     ParticleSystem _particle;
+
+    public bool beDetected;
 
     private void Awake()
     {
@@ -32,12 +30,20 @@ public class Obstacle : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        //UIManager.Instance.mousePointer.GetComponentInChildren<Text>().enabled = true;
+        if (GameManager.Instance.IsPause)
+        {
+            UIManager.Instance.mousePointer.MouseType = MouseType.Repair;
+
+        }
     }
 
     private void OnMouseExit()
     {
-        //UIManager.Instance.mousePointer.GetComponentInChildren<Text>().enabled = false;
+        if (GameManager.Instance.IsPause)
+        {
+            UIManager.Instance.mousePointer.MouseType = MouseType.Null;
+
+        }
     }
 
 
@@ -84,12 +90,15 @@ public class Obstacle : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         _particle.Pause();
         _sprite.enabled = false;
-        _collider.enabled = false;
-        this.isDestroyed = true;
+        //_collider.enabled = false;
+        isDestroyed = true;
     }
 
     IEnumerator ObsRepair()
     {
+
+        isDestroyed = false;
+
         Debug.Log("Repair");
         GetComponent<RewindParticleSystem>().enabled = true;
         yield return new WaitForSeconds(0.2f);
@@ -105,7 +114,6 @@ public class Obstacle : MonoBehaviour
             yield return 0;
         }
         _collider.enabled = true;
-        this.isRepaired = true;
     }
 
 

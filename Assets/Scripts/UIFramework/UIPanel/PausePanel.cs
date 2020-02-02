@@ -9,50 +9,53 @@ public class PausePanel : MonoBehaviour
     Button button;
     public Slider slider;
 
+    public SliderController sc;
+
     public Text text;
-
-
-    [SerializeField]
-    bool isOn ;
-    bool IsOn
-    {
-        get { return isOn; }
-        set
-        {
-            if (value == true) OnEnter();
-            else OnExit();
-            isOn = value;
-        }
-    }
 
     private void Awake()
     {
         image = GetComponent<Image>();
-        //button = GetComponentInChildren<Button>();
+        button = GetComponentInChildren<Button>();
+        slider = GetComponentInChildren<Slider>();
+        sc = GetComponentInChildren<SliderController>();
+
+        text.enabled = false;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        //button.onClick.AddListener(() => { IsOn = !IsOn; });
+        button.onClick.AddListener(() =>
+        {
+            OnExit();
+        });
+
+        button.gameObject.SetActive(false);
     }
+
 
     public void OnEnter()
     {
+
+        text.enabled = true;
+        UIManager.Instance.pausePanel.sc.currentValue = UIManager.Instance.pausePanel.slider.value;
+        button.gameObject.SetActive(true);
         image.enabled = true;
         GameManager.Instance.IsPause = true;
         slider.interactable = true;
-        UIManager.Instance.sliderController.currentValue = UIManager.Instance.sliderController.slider.value;
-        UIManager.Instance.mousePointer.MouseType = MouseType.Repair;
+        sc.currentValue = slider.value;
+        UIManager.Instance.mousePointer.MouseType = MouseType.Null;
     }
 
 
     public void OnExit()
     {
+        text.enabled = false;
+
+        button.gameObject.SetActive(false);
         image.enabled = false;
         GameManager.Instance.IsPause = false;
         slider.interactable = false;
-        UIManager.Instance.mousePointer.MouseType = MouseType.Destroy;
-
+        UIManager.Instance.mousePointer.MouseType = MouseType.Null;
     }
 }

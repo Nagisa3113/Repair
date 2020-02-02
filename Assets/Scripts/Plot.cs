@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Plot
 {
-    [TextArea]
+    //[TextArea]
     public List<string> texts;
     public bool canInterrupt;
     public int nextPlotNum;

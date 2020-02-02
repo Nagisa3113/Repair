@@ -68,8 +68,6 @@ public class UIManager : MonoBehaviour
 
         BasePanel panel = GetPanel(panelType);
 
-
-
         panel.OnEnter();
         panelStack.Push(panel);
     }

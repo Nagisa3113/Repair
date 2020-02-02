@@ -6,15 +6,14 @@ public class Player : MonoBehaviour
 {
     public LayerMask objectLayer;
     public string playerName { get; set; }
-    public float age;
+    public float age=19;
     Rigidbody2D rg;
-    Animator animator;
+    public Animator animator;
     public float moveSpeed = 3f;
     public bool canMove = true;
     int anim_idle;
 
     public Obstacle obstacle;
-
 
     private void Awake()
     {
@@ -26,13 +25,18 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        age = 0;
         anim_idle = Animator.StringToHash("idle");
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            UIManager.Instance.PushPanel(UIPanelType.PausePanel);
+        }
+
         if (GameManager.Instance.IsPause) return;
 
         if (canMove && UIManager.Instance.dialogPanel.textFinished)
@@ -45,21 +49,44 @@ public class Player : MonoBehaviour
     }
     RaycastHit2D colliderHit;
 
+
+
     private void FixedUpdate()
     {
+
+        if (GameManager.Instance.IsPause) return;
+
         colliderHit = Physics2D.Raycast(this.transform.position, Vector2.right, .5f, objectLayer);
 
-        if (colliderHit)
+        if (colliderHit && colliderHit.collider.GetComponent<Obstacle>().isDestroyed)
         {
-            canMove = false;
-            animator.SetBool(anim_idle, true);
-            if (colliderHit.collider.GetComponent<Obstacle>() != null)
+            UIManager.Instance.pausePanel.OnEnter();
+        }
+
+        else if (colliderHit)
+        {
+
+
+            if (colliderHit.collider.GetComponent<Obstacle>() != null && colliderHit.collider.GetComponent<Obstacle>() != obstacle)
             {
 
-                Obstacle ob = colliderHit.collider.GetComponent<Obstacle>();
-                obstacle = ob;
-                UIManager.Instance.dialogPanel.ScriptablePlots = ob.scriptablePlots;
+                obstacle = colliderHit.collider.GetComponent<Obstacle>();
+
+
+                if (obstacle.beDetected == false)
+                {
+                    obstacle.beDetected = true;
+                    obstacle.plotIndex = UIManager.Instance.dialogPanel.index;
+                    UIManager.Instance.dialogPanel.NextMsg();
+                }
+                else
+                {
+                    UIManager.Instance.dialogPanel.NextMsg(obstacle.plotIndex);
+                }
             }
+            canMove = false;
+            animator.SetBool(anim_idle, true);
+
         }
         else
         {
