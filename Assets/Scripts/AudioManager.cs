@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-
     public static AudioManager Instance;
-
     public AudioClip gameOver;
     public AudioClip type;
     public AudioClip destroy;
-
 
     public AudioSource audio;
 
@@ -20,13 +17,11 @@ public class AudioManager : MonoBehaviour
         audio = GetComponent<AudioSource>();
     }
 
-
     public void PlayClip(AudioClip clip)
     {
         audio.Stop();
         audio.clip = clip;
         audio.Play();
     }
-
 
 }

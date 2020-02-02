@@ -20,7 +20,6 @@ public class TitleController : MonoBehaviour
         StartCoroutine(Fade());
     }
 
-
     IEnumerator Fade()
     {
     

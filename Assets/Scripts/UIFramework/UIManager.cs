@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public GameObject goodend;
+
     public static UIManager Instance;
 
     public Image image_bg;

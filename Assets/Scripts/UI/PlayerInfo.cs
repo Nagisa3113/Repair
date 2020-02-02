@@ -8,22 +8,14 @@ public class PlayerInfo : MonoBehaviour
     public Text timeText;
     public Image image;
     public Sprite manSprite;
-
     public Text nameText;
-
     public Text status;
-
     public Animator player_anim;
-
-    AnimatorOverrideController aoc;
-
-
     public AnimationClip m_walk;
     public AnimationClip m_idle;
 
-
+    AnimatorOverrideController aoc;
     Player player;
-
 
     // Start is called before the first frame update
     void Start()
@@ -40,8 +32,6 @@ public class PlayerInfo : MonoBehaviour
         if (GameManager.Instance.IsPause) return;
         timeText.text = (player.age).ToString("f2");
 
-
-
         if (player.age >= 20)
         {
             image.sprite = manSprite;
@@ -50,6 +40,5 @@ public class PlayerInfo : MonoBehaviour
 
             status.text = "Adult";
         }
-
     }
 }

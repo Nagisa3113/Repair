@@ -6,12 +6,10 @@ using UnityEngine.UI;
 public class PausePanel : MonoBehaviour
 {
     public Image image;
-    Button button;
     public Slider slider;
-
     public SliderController sc;
-
     public Text text;
+    Button button;
 
     private void Awake()
     {

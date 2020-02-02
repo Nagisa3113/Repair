@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<Obstacle> obstacleList = new List<Obstacle>();
-
     bool isPause;
     public bool IsPause
     {
@@ -17,14 +15,10 @@ public class GameManager : MonoBehaviour
             isPause = value;
         }
     }
-
     public static GameManager Instance;
-
     public Player player;
-
     public Vector3 startPos;
     public Vector3 endPos;
-
 
     public Transform lastObs;
 
@@ -35,7 +29,6 @@ public class GameManager : MonoBehaviour
         startPos = player.transform.position;
         endPos = lastObs.position;
     }
-
 
     void PauseGame()
     {
@@ -50,6 +43,5 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.dialogPanel.image.raycastTarget = true; ;
 
     }
-
 
 }

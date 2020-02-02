@@ -68,8 +68,6 @@ public class MousePointer : MonoBehaviour
     }
 
 
-
-
     // Update is called once per frame
     void Update()
     {
@@ -85,7 +83,6 @@ public class MousePointer : MonoBehaviour
         //this.transform.position = Vector3.MoveTowards(this.transform.position, dis, Time.deltaTime);
         //Vector3 speed = Vector3.zero;
         //this.transform.position = Vector3.SmoothDamp(this.transform.position, dis, ref speed, 0.1f);
-
     }
 
 

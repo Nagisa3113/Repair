@@ -8,17 +8,14 @@ public class DialogPanel : MonoBehaviour
 {
     public ScriptablePlots plot_good;
     public ScriptablePlots plot_bad;
-
     public Image image;
-    Text text;
-
     public Plot plot;
-
     public int index;
-    [SerializeField]
-    float textSpeed = 0.1f;
 
     public bool textFinished = true;
+
+    Text text;
+    [SerializeField] float textSpeed = 0.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,11 +31,8 @@ public class DialogPanel : MonoBehaviour
     IEnumerator AutoText()
     {
         textFinished = false;
-
         text.text = "";
-
         AudioManager.Instance.PlayClip(AudioManager.Instance.type);
-
         for (int i = 0; i < plot.texts.Count; i++)
         {
             for (int j = 0; j < plot.texts[i].Length; j++)
@@ -49,9 +43,7 @@ public class DialogPanel : MonoBehaviour
             yield return new WaitForSeconds(0.6f);
             text.text = "";
         }
-
         textFinished = true;
-
         if (plot.nextPlotNum == -1)
         {
             //GameOver;
@@ -60,6 +52,8 @@ public class DialogPanel : MonoBehaviour
         }
         else if (plot.nextPlotNum == -2)
         {
+            UIManager.Instance.goodend.SetActive(true);
+            StartCoroutine(Quit());
         }
         else
         {
@@ -67,6 +61,11 @@ public class DialogPanel : MonoBehaviour
         }
     }
 
+    IEnumerator Quit()
+    {
+        yield return new WaitForSeconds(3.5f);
+        Application.Quit();
+    }
 
     public void NextMsg()
     {
@@ -81,8 +80,6 @@ public class DialogPanel : MonoBehaviour
         index = plot.nextPlotNum;
         StartCoroutine(AutoText());
     }
-
-
 
 
 

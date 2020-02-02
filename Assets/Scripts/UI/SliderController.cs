@@ -6,18 +6,14 @@ using UnityEngine.UI;
 public class SliderController : MonoBehaviour
 {
     public Slider slider;
-
     Player player;
-
     public float currentValue;
-
     float max;
     float min;
 
     private void Awake()
     {
         slider = GetComponent<Slider>();
-
         slider.interactable = false;
     }
 
@@ -32,32 +28,17 @@ public class SliderController : MonoBehaviour
         {
             if (GameManager.Instance.IsPause)
             {
-                if (value > currentValue)
-                {
-                    slider.value = currentValue;
-                }
-                else
-                {
-                    player.transform.position = new Vector3(value * max + min, player.transform.position.y, player.transform.position.z);
-                }
+                if (value > currentValue) { slider.value = currentValue; }
+                else { player.transform.position = new Vector3(value * max + min, player.transform.position.y, player.transform.position.z); }
             }
-            
+
         });
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         slider.value = (GameManager.Instance.player.transform.position.x - min) / max;
-
     }
-
-    private void OnMouseDown()
-    {
-        Debug.LogError("sdf");
-    }
-
-
 
 }
