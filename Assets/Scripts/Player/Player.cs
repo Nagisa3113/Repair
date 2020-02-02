@@ -6,12 +6,15 @@ public class Player : MonoBehaviour
 {
     public LayerMask objectLayer;
     public string playerName { get; set; }
-    public float age=19;
+    public float age;
     Rigidbody2D rg;
     public Animator animator;
     public float moveSpeed = 3f;
     public bool canMove = true;
     int anim_idle;
+
+
+    public float ageSpeed;
 
     public Obstacle obstacle;
 
@@ -32,16 +35,12 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            UIManager.Instance.PushPanel(UIPanelType.PausePanel);
-        }
-
         if (GameManager.Instance.IsPause) return;
 
         if (canMove && UIManager.Instance.dialogPanel.textFinished)
         {
-            age += Time.deltaTime;
+            animator.SetBool(anim_idle, false);
+            age += Time.deltaTime * ageSpeed;
             rg.velocity = new Vector2(1f * moveSpeed, rg.velocity.y);
             // rg.MovePosition(transform.position + Vector3.right * .1f);
         }

@@ -10,12 +10,21 @@ public class StartPanel : BasePanel
 
     public override void OnEnter()
     {
+        inputField = GetComponentInChildren<InputField>();
+        button = GetComponentInChildren<Button>();
+        button.onClick.AddListener(() =>
+        {
+            UIManager.Instance.playerInfo.nameText.text = inputField.textComponent.text;
+            UIManager.Instance.PopPanel();
+        });
         base.OnEnter();
+        Time.timeScale = 0;
     }
 
     public override void OnExit()
     {
         base.OnExit();
+        Time.timeScale = 1;
         Destroy(this.gameObject);
     }
 
@@ -28,25 +37,6 @@ public class StartPanel : BasePanel
     {
         base.OnResume();
     }
-
-    private void Awake()
-    {
-        inputField = GetComponentInChildren<InputField>();
-        button = GetComponentInChildren<Button>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        button.onClick.AddListener(() =>
-        {
-            GameManager.Instance.player.playerName = inputField.textComponent.text;
-            UIManager.Instance.PopPanel();
-        });
-    }
-
-
-    
 
     // Update is called once per frame
     void Update()

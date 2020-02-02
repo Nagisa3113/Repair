@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+
+    public Image image_bg;
 
     public SliderController sliderController;
     public MousePointer mousePointer;
@@ -32,6 +35,30 @@ public class UIManager : MonoBehaviour
     {
         get { return panelStack?.Peek(); }
     }
+
+
+    private void Start()
+    {
+        Time.timeScale = 0;
+        StartCoroutine(Fade());
+    }
+
+
+    IEnumerator Fade()
+    {
+        Color c = image_bg.color;
+        while (c.a > 0.02f)
+        {
+            c.a -= 0.005f;
+            image_bg.color = c;
+            yield return 0;
+        }
+
+        Destroy(image_bg.gameObject);
+        UIManager.Instance.PushPanel(UIPanelType.StartPanel);
+
+    }
+
 
     void Awake()
     {

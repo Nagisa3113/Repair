@@ -25,19 +25,17 @@ public class GameManager : MonoBehaviour
     public Vector3 startPos;
     public Vector3 endPos;
 
+
+    public Transform lastObs;
+
     private void Awake()
     {
         Instance = this;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         startPos = player.transform.position;
-        endPos = startPos + new Vector3(25, 0, 0);
+        endPos = lastObs.position;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //UIManager.Instance.PushPanel(UIPanelType.StartPanel);
-    }
 
     void PauseGame()
     {

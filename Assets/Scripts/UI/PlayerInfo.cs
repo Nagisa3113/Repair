@@ -9,6 +9,7 @@ public class PlayerInfo : MonoBehaviour
     public Image image;
     public Sprite manSprite;
 
+    public Text nameText;
 
     public Text status;
 

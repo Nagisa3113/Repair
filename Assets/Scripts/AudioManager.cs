@@ -9,6 +9,8 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip gameOver;
     public AudioClip type;
+    public AudioClip destroy;
+
 
     public AudioSource audio;
 

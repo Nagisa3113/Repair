@@ -3,10 +3,6 @@
     {
       "panelTypeString": "StartPanel",
       "path": "UIPanel/StartPanel"
-    },
-    {
-      "panelTypeString": "PausePanel",
-      "path": "UIPanel/PausePanel"
     }
     
   ]

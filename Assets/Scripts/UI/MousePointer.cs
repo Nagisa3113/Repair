@@ -48,15 +48,23 @@ public class MousePointer : MonoBehaviour
                     this.text.text = repairText;
                     break;
             }
-            
+
         }
     }
-    // Start is called before the first frame update
-    void Start()
+
+
+    private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         image = GetComponentInChildren<Image>();
         text = GetComponentInChildren<Text>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        this.MouseType = MouseType.Null;
+
     }
 
 

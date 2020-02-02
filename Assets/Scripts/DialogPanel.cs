@@ -50,14 +50,13 @@ public class DialogPanel : MonoBehaviour
             text.text = "";
         }
 
-        AudioManager.Instance.audio.Stop();
-
         textFinished = true;
 
         if (plot.nextPlotNum == -1)
         {
             //GameOver;
             UIManager.Instance.pausePanel.OnEnter();
+            AudioManager.Instance.PlayClip(AudioManager.Instance.gameOver);
         }
         else if (plot.nextPlotNum == -2)
         {
@@ -96,12 +95,11 @@ public class DialogPanel : MonoBehaviour
     {
         if (plot.canInterrupt)
         {
+            GetComponent<AudioSource>().PlayOneShot(AudioManager.Instance.destroy);
             GameManager.Instance.player.obstacle.DestroyObs();
-
             StopAllCoroutines();
             plot = plot_bad.plots[plot.interruptPlotNum];
             StartCoroutine(AutoText());
-
         }
     }
 

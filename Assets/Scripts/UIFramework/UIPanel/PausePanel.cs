@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PausePanel : MonoBehaviour
 {
-    Image image;
+    public Image image;
     Button button;
     public Slider slider;
 
@@ -15,7 +15,7 @@ public class PausePanel : MonoBehaviour
 
     private void Awake()
     {
-        image = GetComponent<Image>();
+
         button = GetComponentInChildren<Button>();
         slider = GetComponentInChildren<Slider>();
         sc = GetComponentInChildren<SliderController>();
